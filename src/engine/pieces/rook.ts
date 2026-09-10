@@ -20,17 +20,11 @@ export default class Rook extends Piece {
         for (let i=0; i < GameSettings.BOARD_SIZE; i++){
 
             if (i != currentCol){
-
                 availableMoves.push(Square.at(currentRow,i));
-
             }
-        }
-        for (let i=0; i < GameSettings.BOARD_SIZE; i++){
             
             if (i != currentRow){
-
                 availableMoves.push(Square.at(i,currentCol));
-
             }
         }
 
