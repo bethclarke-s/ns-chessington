@@ -17,9 +17,12 @@ export default class Bishop extends Piece {
 
         const availableMoves = [];
         
-        for (let i=1; i < GameSettings.BOARD_SIZE; i++){
+        const boardSize = GameSettings.BOARD_SIZE;
+        
+        for (let i=1; i < boardSize; i++){
 
-            if (currentRow + i < GameSettings.BOARD_SIZE && currentCol + i < GameSettings.BOARD_SIZE){
+            // Forwards diagonal
+            if (currentRow + i < boardSize && currentCol + i < boardSize){
                 availableMoves.push(Square.at(currentRow + i, currentCol + i));
             } 
             
@@ -27,13 +30,14 @@ export default class Bishop extends Piece {
                 availableMoves.push(Square.at(currentRow - i, currentCol - i));
             }
 
-            if (currentRow + i < GameSettings.BOARD_SIZE && currentCol - i >= 0){
+            // Backwards diagonal
+            if (currentRow + i < boardSize && currentCol - i >= 0){
                 availableMoves.push(Square.at(currentRow + i, currentCol - i));
             } 
             
-            if (currentRow - i >= 0 && currentCol + i < GameSettings.BOARD_SIZE){
+            if (currentRow - i >= 0 && currentCol + i < boardSize){
                 availableMoves.push(Square.at(currentRow - i, currentCol + i));
-            }
+            } // TODO: Is there a cleaner way to do this?
 
         }
 
