@@ -11,43 +11,26 @@ export default class Queen extends Piece {
 
     public getAvailableMoves(board: Board) {
         const currentSquare = board.findPiece(this);
-
-        const currentRow = currentSquare.row;
-        const currentCol = currentSquare.col;
+        const { row, col } = currentSquare;
+        const boardSize = GameSettings.BOARD_SIZE;
 
         const availableMoves = [];
         
-        const boardSize = GameSettings.BOARD_SIZE;
-        
-        // Lateral moves (like Rook)
-        for (let i = 0; i < boardSize; i++) {
-            if (i != currentCol) {
-                availableMoves.push(Square.at(currentRow, i));
-            }
-            
-            if (i != currentRow) {
-                availableMoves.push(Square.at(i, currentCol));
-            }
-        }
-        
-        // Diagonal moves (like Bishop)
-        for (let i = 1; i < boardSize; i++) {
-            // Forwards diagonal
-            if (currentRow + i < boardSize && currentCol + i < boardSize) {
-                availableMoves.push(Square.at(currentRow + i, currentCol + i));
-            }
-            
-            if (currentRow - i >= 0 && currentCol - i >= 0) {
-                availableMoves.push(Square.at(currentRow - i, currentCol - i));
-            }
+        const directions = [
+            [0, 1], [0, -1], [1, 0], [-1, 0],  // lateral
+            [1, 1], [1, -1], [-1, 1], [-1, -1]  // diagonal
+        ];
 
-            // Backwards diagonal
-            if (currentRow + i < boardSize && currentCol - i >= 0) {
-                availableMoves.push(Square.at(currentRow + i, currentCol - i));
-            }
-            
-            if (currentRow - i >= 0 && currentCol + i < boardSize) {
-                availableMoves.push(Square.at(currentRow - i, currentCol + i));
+        for (const [rowDir, colDir] of directions) {
+            for (let i = 1; i < boardSize; i++) {
+                const newRow = row + rowDir * i;
+                const newCol = col + colDir * i;
+
+                if (newRow >= 0 && newRow < boardSize && newCol >= 0 && newCol < boardSize) {
+                    availableMoves.push(Square.at(newRow, newCol));
+                } else {
+                    break; // Stop when we hit the board edge
+                }
             }
         }
 

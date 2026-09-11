@@ -11,34 +11,27 @@ export default class Bishop extends Piece {
 
     public getAvailableMoves(board: Board) {
         const currentSquare = board.findPiece(this);
+        const { row, col } = currentSquare;
+        const boardSize = GameSettings.BOARD_SIZE;
 
-        const currentRow = currentSquare.row;
-        const currentCol = currentSquare.col;
 
         const availableMoves = [];
         
-        const boardSize = GameSettings.BOARD_SIZE;
-        
-        for (let i=1; i < boardSize; i++){
+        const directions = [
+            [1, 1], [1, -1], [-1, 1], [-1, -1]  // diagonal
+        ];
 
-            // Forwards diagonal
-            if (currentRow + i < boardSize && currentCol + i < boardSize){
-                availableMoves.push(Square.at(currentRow + i, currentCol + i));
-            } 
-            
-            if (currentRow - i >= 0 && currentCol - i >= 0){
-                availableMoves.push(Square.at(currentRow - i, currentCol - i));
+        for (const [rowDir, colDir] of directions) {
+            for (let i = 1; i < boardSize; i++) {
+                const newRow = row + rowDir * i;
+                const newCol = col + colDir * i;
+
+                if (newRow >= 0 && newRow < boardSize && newCol >= 0 && newCol < boardSize) {
+                    availableMoves.push(Square.at(newRow, newCol));
+                } else {
+                    break; // Stop when we hit the board edge
+                }
             }
-
-            // Backwards diagonal
-            if (currentRow + i < boardSize && currentCol - i >= 0){
-                availableMoves.push(Square.at(currentRow + i, currentCol - i));
-            } 
-            
-            if (currentRow - i >= 0 && currentCol + i < boardSize){
-                availableMoves.push(Square.at(currentRow - i, currentCol + i));
-            } // TODO: Is there a cleaner way to do this?
-
         }
 
         console.log(availableMoves);
